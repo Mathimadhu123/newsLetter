@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In & Sign Up</title>
+    <style>
+        body {
+            background-color: rgb(227, 232, 236);
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 0;
+            margin-left: 20%;
+            padding: 0;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #container {
+            display: flex;
+            justify-content: space-between;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        #left,
+        #right {
+            padding: 30px;
+            flex: 1;
+        }
+
+        #left {
+            background-color: white;
+        }
+
+        #right {
+            background-color: rgb(66, 103, 179);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h1{
+            margin-left: 20%;
+        }
+
+        button {
+            background-color: rgb(66, 103, 179);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: rgb(50, 80, 150);
+        }
+
+        #toggle {
+            margin-top: 10px;
+            text-align: center;
+            color: rgb(66, 103, 179);
+            cursor: pointer;
+        }
+
+        #toggle:hover {
+            text-decoration: underline;
+        }
+
+        #error-message,
+        #success-message {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #error-message {
+            color: red;
+        }
+
+        #success-message {
+            color: green;
+        }
+        .disabled-text {
+            color: gray;
+            cursor: not-allowed;
+            pointer-events: none;
+            /* Prevents interactions */
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Technology Newsletter</h1>
+
+    <div id="container">
+
+        <div id="left">
+            <div id="sign-in-form" class="form-container active">
+                <h3>Sign In</h3>
+                <p class="disabled-text">Welcome back! Please enter your details</p>
+                <label>Email</label>
+                <input id="signInEmail" type="email" placeholder="Enter your email" required>
+                <label>Password</label>
+                <input id="signInPassword" type="password" placeholder="Enter your password" required>
+                <button onclick="signInFunction()">Sign In</button>
+                <p id="error-message"></p>
+                <div id="toggle" onclick="toggleForms()">Don't have an account? Sign Up</div>
+            </div>
+
+            <div id="sign-up-form" class="form-container">
+                <h3>Sign Up</h3>
+                <p class="disabled-text">Create a new account</p>
+                <label>Email</label>
+                <input id="signUpEmail" type="email" placeholder="Enter your email" required>
+                <label>Password</label>
+                <input id="signUpPassword" type="password" placeholder="Enter your password" required>
+                <button onclick="signUpFunction()">Sign Up</button>
+                <p id="success-message"></p>
+                <div id="toggle" onclick="toggleForms()">Already have an account? Sign In</div>
+            </div>
+        </div>
+
+        <div id="right">
+            <h2>Stay Updated!</h2>
+            <p>Be the first to know about our latest updates, exclusive offers, and exciting news. Subscribe to our
+                newsletter and never miss out on what's trending.</p>
+            <ol>
+                <li>Get personalized content delivered to your inbox.</li>
+                <li>Enjoy exclusive subscriber benefits.</li>
+                <li>Stay ahead with industry insights and tips.</li>
+            </ol>
+            <p>Join our community today!</p>
+        </div>
+    </div>
+
+    <script>
+        //toggle between signin & signup
+        function toggleForms() {
+            const signInForm = document.getElementById("sign-in-form");
+            const signUpForm = document.getElementById("sign-up-form");
+            signInForm.classList.toggle("active");
+            signUpForm.classList.toggle("active");
+        }
+        //signup functionality stores the value locally
+        function signUpFunction() {
+            const email = document.getElementById("signUpEmail").value;
+            const password = document.getElementById("signUpPassword").value;
+
+            if (email && password) {
+                localStorage.setItem(email, password);
+                document.getElementById("success-message").textContent = "Sign Up Successful! You can now sign in.";
+                document.getElementById("error-message").textContent = "";
+            } else {
+                document.getElementById("success-message").textContent = "";
+                document.getElementById("error-message").textContent = "Please fill out all fields.";
+            }
+        }
+
+        //signin functionality stores the value locally
+        function signInFunction() {
+            const email = document.getElementById("signInEmail").value;
+            const password = document.getElementById("signInPassword").value;
+            const storedPassword = localStorage.getItem(email);
+
+            if (storedPassword && storedPassword === password) {
+                alert("Sign In Successful!");
+                document.getElementById("error-message").textContent = "";
+            } else {
+                document.getElementById("error-message").textContent = "Invalid email or password. Please try again.";
+            }
+        }
+    </script>
+</body>
+
+</html>
